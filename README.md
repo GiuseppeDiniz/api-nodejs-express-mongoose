@@ -1,26 +1,25 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
-# Nome do Projeto
+# FundControl API
 
-Descrição curta do projeto.
+API with MongoDB, Express, and Mongoose for database connection.
 
-## Recursos
+## Description
 
-- Recurso 1
-- Recurso 2
-- Recurso 3
+This is a Node.js API built with MongoDB, Express, and Mongoose. It provides endpoints for managing financial data.
 
-## Pré-requisitos
+## Getting Started
 
-- Pré-requisito 1
-- Pré-requisito 2
-- Pré-requisito 3
+### Prerequisites
+
+- Node.js (>= 14.0.0)
+- MongoDB (>= 4.0.0)
 
 ## Instalação
 
-1. Clone o repositório: `git clone https://github.com/seu-usuario/seu-projeto.git`
-2. Navegue até o diretório do projeto: `cd seu-projeto`
-3. Instale as dependências: `npm install`
+1. Clone o repositório: `git clone https://github.com/GiuseppeDiniz/API-FundControl.git`
+2. Navegue até o diretório do projeto: `API-FundControl`
+3. Instale as dependências: `yarn`
 
 ## Uso
 

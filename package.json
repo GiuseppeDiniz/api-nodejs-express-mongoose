@@ -1,0 +1,43 @@
+{
+  "name": "fundcontrol",
+  "version": "1.0.0",
+  "description": "API with mongoDb, express and mongoose for database connection.",
+  "main": "src/index.ts",
+  "repository": "https://github.com/GiuseppeDiniz/API-FundControl.git",
+  "author": "Giuseppe Diniz P. de Souza",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/server.js",
+    "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node ./src/server.ts\"",
+    "lint": "eslint . --fix",
+    "commit": "git add . && cz"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "module-alias": "^2.2.2",
+    "mongoose": "^7.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/module-alias": "^2.0.1",
+    "@types/node": "^20.2.5",
+    "@typescript-eslint/eslint-plugin": ">=5.57.0",
+    "@typescript-eslint/parser": ">=5.57.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": ">=8.0.0",
+    "eslint-config-xo": "^0.43.1",
+    "eslint-config-xo-typescript": "^0.57.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import-helpers": "^1.3.1",
+    "nodemon": "^2.0.22",
+    "ts-node-dev": "^2.0.0",
+    "typescript": ">=4.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

@@ -25,6 +25,25 @@ class UserController {
     }
   };
 
+  public static readUser = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    try {
+      const userId = req.params.id;
+      const user = await User.findById(userId);
+
+      if (!user) {
+        res.status(404).json({ error: 'Usuário não encontrado' });
+        return;
+      }
+
+      res.json(user);
+    } catch (err) {
+      res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+  };  
+
   public static createUser = async (
     req: Request,
     res: Response

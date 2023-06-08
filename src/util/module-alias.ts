@@ -6,7 +6,7 @@ const files = path.resolve(__dirname, "../..");
 /* eslint-disable @typescript-eslint/naming-convention */
 moduleAlias.addAliases({
   "@src": path.join(files, "src"),
-  "@modules": path.join(files, "src/app/modules"),
-  "@test": path.join(files, "test"),
+  "@models": path.join(files, "src/models"),
+  "@test": path.join(files, "__TEST__"),
 });
 /* eslint-enable @typescript-eslint/naming-convention */

@@ -1,3 +1,4 @@
+import { hash } from "bcryptjs";
 import { type Request, type Response } from "express";
 import User, { type UserDocument } from "../models/User";
 
@@ -34,15 +35,15 @@ class UserController {
       const user = await User.findById(userId);
 
       if (!user) {
-        res.status(404).json({ error: 'Usuário não encontrado' });
+        res.status(404).json({ error: "Usuário não encontrado" });
         return;
       }
 
       res.json(user);
     } catch (err) {
-      res.status(500).json({ error: 'Erro interno do servidor' });
+      res.status(500).json({ error: "Erro interno do servidor" });
     }
-  };  
+  };
 
   public static createUser = async (
     req: Request,
@@ -66,10 +67,12 @@ class UserController {
         return res.status(400).json({ message: "Email already exists" });
       }
 
+      const passwordHash = await hash(password, 8);
+
       const now = new Date();
       const user: UserDocument = new User({
         login,
-        password,
+        password: passwordHash,
         email,
         createdAt: now,
         updatedAt: now,

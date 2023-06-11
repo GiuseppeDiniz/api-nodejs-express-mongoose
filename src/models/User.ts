@@ -6,7 +6,7 @@ export type UserDocument = {
   email: string;
   createdAt: Date;
   updatedAt: Date;
-  authorizationLevel: number;
+  refreshToken?: string;
 } & Document;
 
 export type UserModel = Record<string, unknown> & Model<UserDocument>;
@@ -37,10 +37,8 @@ const userSchema = new Schema<UserDocument, UserModel>(
       type: Date,
       default: Date.now,
     },
-    authorizationLevel: {
-      type: Number,
-      required: true,
-      default: 0,
+    refreshToken: {
+      type: String,
     },
   },
   { collection: "users" }

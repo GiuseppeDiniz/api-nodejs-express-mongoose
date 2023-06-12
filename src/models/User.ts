@@ -4,8 +4,6 @@ export type UserDocument = {
   login: string;
   password: string;
   email: string;
-  createdAt: Date;
-  updatedAt: Date;
   refreshToken?: string;
 } & Document;
 
@@ -27,21 +25,14 @@ const userSchema = new Schema<UserDocument, UserModel>(
       required: true,
       unique: true,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      immutable: true,
-      required: true,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
     refreshToken: {
       type: String,
     },
   },
-  { collection: "users" }
+  {
+    timestamps: true,
+    collection: "users",
+  }
 );
 
 const User = mongoose.model<UserDocument, UserModel>("User", userSchema);

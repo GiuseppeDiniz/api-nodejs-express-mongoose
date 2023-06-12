@@ -1,4 +1,6 @@
-import express, { type Express, Application, Request, Response } from "express";
+import express, { type Express } from "express";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 import db from "./config/dbConnect";
 import routes from "./routes";
 
@@ -12,8 +14,26 @@ db.once("open", () => {
   // Executado quando a conexão com o banco de dados é estabelecida com sucesso
 });
 
-// Middlewares
+/*
+  ## Middlewares
+*/
 app.use(express.json());
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: "Nome da API",
+      description: "Descrição da API",
+      version: "1.0.0",
+    },
+  },
+  apis: ["./routes/*.routes.ts"],
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+//routes
 routes(app);
 
 export default app;

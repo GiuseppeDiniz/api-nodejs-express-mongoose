@@ -1,4 +1,4 @@
-import User, { UserDocument } from "../models/User";
+import User, { IUser } from "../models/User";
 import { compare } from "bcryptjs";
 import { decode, sign, verify } from "jsonwebtoken";
 require("dotenv/config");
@@ -12,7 +12,7 @@ class AuthService {
   public static async validateUser(
     login: string,
     password: string
-  ): Promise<UserDocument> {
+  ): Promise<IUser> {
     const user = await User.findOne({ login });
     if (!user) {
       throw new Error("Credenciais inválidas");
@@ -23,12 +23,14 @@ class AuthService {
     }
     return user;
   }
+
   public static async generateAccessToken(userId: any) {
     return sign({}, `${ACCESSTOKEN_SECRET}`, {
       subject: userId,
       expiresIn: ACCESSTOKEN_EXPIRATION,
     });
   }
+
   public static async validateAccessToken(accessToken: string) {
     return await verify(accessToken, `${ACCESSTOKEN_SECRET}`);
   }

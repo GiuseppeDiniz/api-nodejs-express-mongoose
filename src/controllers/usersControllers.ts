@@ -1,6 +1,6 @@
 import { hash } from "bcryptjs";
 import { type Request, type Response } from "express";
-import User, { type UserDocument } from "../models/User";
+import User, { IUser } from "../models/User";
 
 class UserController {
   public static listUsers = async (
@@ -8,7 +8,7 @@ class UserController {
     res: Response
   ): Promise<void> => {
     try {
-      const users: UserDocument[] = await User.find();
+      const users: IUser[] = await User.find();
       res.status(200).json(users);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -52,17 +52,16 @@ class UserController {
     try {
       const { login, password, email } = req.body;
 
-      const existingUser: UserDocument | null | undefined = await User.findOne({
+      const existingUser: IUser | null | undefined = await User.findOne({
         login,
       });
       if (existingUser) {
         return res.status(400).json({ message: "Login already exists" });
       }
 
-      const existingEmailUser: UserDocument | null | undefined =
-        await User.findOne({
-          email,
-        });
+      const existingEmailUser: IUser | null | undefined = await User.findOne({
+        email,
+      });
       if (existingEmailUser) {
         return res.status(400).json({ message: "Email already exists" });
       }
@@ -70,7 +69,7 @@ class UserController {
       const passwordHash = await hash(password, 8);
 
       const now = new Date();
-      const user: UserDocument = new User({
+      const user: IUser = new User({
         login,
         password: passwordHash,
         email,

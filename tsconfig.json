@@ -20,21 +20,6 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "baseUrl": ".",
-        "paths": {
-            "@src/*": [
-                "./src/*"
-            ],
-            "@modules/*": [
-                "./src/app/modules/*"
-            ],
-            "@test/*": [
-                "./test/*"
-            ]
-        },
-        "rootDirs": [
-            "./src",
-            "./test"
-        ],
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true
     },

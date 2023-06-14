@@ -1,6 +1,6 @@
 import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
 import express, { type Router } from "express";
-import UserController from "../controllers/usersControllers";
+import UserController from "../controllers/users.controller";
 
 const router: Router = express.Router();
 

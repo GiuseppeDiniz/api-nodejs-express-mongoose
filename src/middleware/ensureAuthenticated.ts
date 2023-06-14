@@ -1,6 +1,6 @@
 import { getTokenFromHeaders } from "../util/getTokenFromHeaders";
 import { Request, Response, NextFunction } from "express";
-import AuthService from "../services/authService";
+import AuthService from "../services/auth.service";
 
 export const ensureAuthenticated = (
   req: Request,
@@ -15,10 +15,10 @@ export const ensureAuthenticated = (
   }
 
   AuthService.validateAccessToken(token)
-    .then((decoded) => {
+    .then(() => {
       next();
     })
-    .catch((err) => {
+    .catch(() => {
       res.status(401).json({ error: "Token inválido" });
     });
 };

@@ -24,6 +24,7 @@ class AuthService {
     return user;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static async generateAccessToken(userId: any) {
     return sign({}, `${ACCESSTOKEN_SECRET}`, {
       subject: userId,
@@ -32,19 +33,20 @@ class AuthService {
   }
 
   public static async validateAccessToken(accessToken: string) {
-    return await verify(accessToken, `${ACCESSTOKEN_SECRET}`);
+    return verify(accessToken, `${ACCESSTOKEN_SECRET}`);
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static async generateRefreshToken(userId: any) {
-    return await sign({}, `${REFRESHTOKEN_SECRET}`, {
+    return sign({}, `${REFRESHTOKEN_SECRET}`, {
       subject: userId,
       expiresIn: REFRESHTOKEN_EXPIRATION,
     });
   }
   public static async validateRefreshToken(refreshToken: string) {
-    return await verify(refreshToken, `${REFRESHTOKEN_SECRET}`);
+    return verify(refreshToken, `${REFRESHTOKEN_SECRET}`);
   }
   public static async decodeToken(token: string) {
-    return await decode(token);
+    return decode(token);
   }
 }
 

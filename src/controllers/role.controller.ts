@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Role, { IRole } from "../models/Role";
-import RoleService from "../services/roleServices";
+import RoleService from "../services/role.service";
 
 type RoleRequest = {
   name: string;
@@ -23,7 +23,7 @@ class RoleController {
       res.status(500).json({ message: "Internal server error" });
     }
   }
-  public static async readRole(req: Request, res: Response): Promise<void> {
+  public static async readRoles(req: Request, res: Response): Promise<void> {
     try {
       const roles: IRole[] = await Role.find();
 
@@ -32,7 +32,7 @@ class RoleController {
       res.status(500).json({ message: "Internal server error" });
     }
   }
-  public static async readRoles(req: Request, res: Response): Promise<void> {
+  public static async readRole(req: Request, res: Response): Promise<void> {
     try {
       const roleId: string = req.params.id;
       const role: IRole | null = await Role.findById(roleId);

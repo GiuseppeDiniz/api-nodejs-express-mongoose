@@ -1,8 +1,43 @@
-import AuthService from "../services/authService";
 import { Request, Response } from "express";
+import bcrypt from "bcryptjs";
+import AuthService from "../services/auth.service";
 import User from "../models/User";
 
-export class RefreshController {
+class AuthController {
+  public static login = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { login, password } = req.body;
+      const user = await User.findOne({ login });
+
+      if (!user) {
+        res.status(401).json({ error: "Credenciais inválidas" });
+        return;
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (!isPasswordValid) {
+        res.status(401).json({ error: "Credenciais inválidas" });
+        return;
+      }
+
+      const accessToken = await AuthService.generateAccessToken(user.id);
+      const refreshToken = await AuthService.generateRefreshToken(user.id);
+
+      await User.updateOne({ _id: user._id }, { refreshToken });
+
+      res.status(200).json({
+        data: {
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
+
   public static refreshTokens = async (
     req: Request,
     res: Response
@@ -48,3 +83,5 @@ export class RefreshController {
     }
   };
 }
+
+export default AuthController;

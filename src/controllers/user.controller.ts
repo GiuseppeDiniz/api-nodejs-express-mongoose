@@ -1,6 +1,5 @@
-import { hash } from "bcryptjs";
-import { type Request, type Response } from "express";
-import User, { IUser } from "../models/User";
+import { Request, Response } from "express";
+import UserService, { type UserRequest } from "../services/user.service";
 
 class UserController {
   public static listUsers = async (
@@ -8,7 +7,7 @@ class UserController {
     res: Response
   ): Promise<void> => {
     try {
-      const users: IUser[] = await User.find();
+      const users = await UserService.listUsers();
       res.status(200).json(users);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -32,16 +31,16 @@ class UserController {
   ): Promise<void> => {
     try {
       const userId = req.params.id;
-      const user = await User.findById(userId);
+      const user = await UserService.readUser(userId);
 
       if (!user) {
-        res.status(404).json({ error: "Usuário não encontrado" });
+        res.status(404).json({ error: "User not found" });
         return;
       }
 
       res.json(user);
     } catch (err) {
-      res.status(500).json({ error: "Erro interno do servidor" });
+      res.status(500).json({ error: "Internal server error" });
     }
   };
 
@@ -50,38 +49,29 @@ class UserController {
     res: Response
   ): Promise<Response> => {
     try {
-      const { login, password, email } = req.body;
+      const { login, password, email }: UserRequest = req.body;
 
-      const existingUser: IUser | null | undefined = await User.findOne({
-        login,
-      });
+      const existingUser = await UserService.findUserByLogin(login);
       if (existingUser) {
         return res.status(400).json({ message: "Login already exists" });
       }
 
-      const existingEmailUser: IUser | null | undefined = await User.findOne({
-        email,
-      });
+      const existingEmailUser = await UserService.findUserByEmail(email);
       if (existingEmailUser) {
         return res.status(400).json({ message: "Email already exists" });
       }
 
-      const passwordHash = await hash(password, 8);
-
-      const now = new Date();
-      const user: IUser = new User({
+      const user: UserRequest = {
         login,
-        password: passwordHash,
+        password,
         email,
-        createdAt: now,
-        updatedAt: now,
-      });
+      };
 
-      await user.save();
+      const createdUser = await UserService.createUser(user);
 
       return res
         .status(201)
-        .json({ message: "User created successfully", user });
+        .json({ message: "User created successfully", user: createdUser });
     } catch (error) {
       console.error("Error creating user:", error);
       return res.status(500).json({ message: "Failed to create user", error });
@@ -94,11 +84,9 @@ class UserController {
   ): Promise<void> => {
     try {
       const userId = req.params.id;
-      const userData = req.body;
+      const userData: UserRequest = req.body;
 
-      const updatedUser = await User.findByIdAndUpdate(userId, userData, {
-        new: true,
-      });
+      const updatedUser = await UserService.updateUser(userId, userData);
 
       if (!updatedUser) {
         res.status(404).json({ message: "User not found" });
@@ -121,7 +109,7 @@ class UserController {
     try {
       const userId = req.params.id;
 
-      const deletedUser = await User.findByIdAndDelete(userId);
+      const deletedUser = await UserService.deleteUser(userId);
 
       if (!deletedUser) {
         res.status(404).json({ message: "User not found" });

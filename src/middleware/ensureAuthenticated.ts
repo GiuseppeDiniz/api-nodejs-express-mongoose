@@ -1,24 +1,24 @@
 import { getTokenFromHeaders } from "../util/getTokenFromHeaders";
 import { Request, Response, NextFunction } from "express";
-import AuthService from "../services/auth.service";
+import { decode, verify } from "jsonwebtoken";
 
-export const ensureAuthenticated = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
-  const token = getTokenFromHeaders(req);
+export const ensureAuthenticated = () => {
+  return async (request: Request, response: Response, next: NextFunction) => {
+    const token = getTokenFromHeaders(request);
 
-  if (!token) {
-    res.status(401).json({ error: "Token não fornecido" });
-    return;
-  }
+    if (!token) {
+      response.status(401).json({ error: "Token não fornecido" });
+      return;
+    }
 
-  AuthService.validateAccessToken(token)
-    .then(() => {
-      next();
-    })
-    .catch(() => {
-      res.status(401).json({ error: "Token inválido" });
-    });
+    try {
+      verify(token, `${process.env.ACCESSTOKEN_SECRET}`);
+
+      request.userId = "testing";
+
+      return next();
+    } catch (err) {
+      return response.status(401).end();
+    }
+  };
 };

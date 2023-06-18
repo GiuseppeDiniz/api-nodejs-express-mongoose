@@ -45,7 +45,7 @@ class AuthService {
   public static async validateRefreshToken(refreshToken: string) {
     return verify(refreshToken, `${REFRESHTOKEN_SECRET}`);
   }
-  public static async decodeToken(token: string) {
+  public static decodeToken(token: string) {
     return decode(token);
   }
 }

@@ -1,15 +1,14 @@
-import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
+import { ensuredAuthenticated } from "../middleware/ensuredAuthenticated";
 import express, { type Router } from "express";
 import UserController from "../controllers/user.controller";
-import { can } from "../middleware/ensureAuthorized";
 
 const userRoutes: Router = express.Router();
 
 userRoutes
-  .get("/users", ensureAuthenticated, can(["login"]), UserController.listUsers)
-  .get("/users/:id", ensureAuthenticated, UserController.readUser)
-  .post("/users", ensureAuthenticated, UserController.createUser)
-  .put("/users/:id", ensureAuthenticated, UserController.updateUser)
-  .delete("/users/:id", ensureAuthenticated, UserController.deleteUser);
+  .get("/users", ensuredAuthenticated, UserController.listUsers)
+  .get("/users/:id", ensuredAuthenticated, UserController.readUser)
+  .post("/users", ensuredAuthenticated, UserController.createUser)
+  .put("/users/:id", ensuredAuthenticated, UserController.updateUser)
+  .delete("/users/:id", ensuredAuthenticated, UserController.deleteUser);
 
 export default userRoutes;

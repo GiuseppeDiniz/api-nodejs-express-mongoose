@@ -1,5 +1,6 @@
 import { hash } from "bcryptjs";
 import { type Request, type Response } from "express";
+import Role from "../models/Role";
 import User, { IUser } from "../models/User";
 
 class UserController {
@@ -132,6 +133,31 @@ class UserController {
     } catch (error: unknown) {
       console.error("Error deleting user:", error);
       res.status(500).json({ message: "Failed to delete user", error });
+    }
+  };
+
+  public static addRoleToUser = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    const { roles } = req.body;
+    const { userId } = req;
+
+    try {
+      const user = await User.findById(userId);
+      const role = await Role.findById(roles);
+
+      if (!user || !role) {
+        res.status(404).json({ error: "User or role not found" });
+        return;
+      }
+
+      user.roles.push(role._id); // Assuming the roles are stored as an array of role IDs in the 'roles' field of the user model
+      await user.save();
+
+      res.status(200).json({ message: "Role added to user successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
     }
   };
 }

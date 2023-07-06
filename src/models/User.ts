@@ -5,6 +5,7 @@ export interface IUser extends Document {
   password: string;
   email: string;
   refreshToken?: string;
+  roles: string[];
 }
 
 export type UserModel = Model<IUser>;
@@ -28,6 +29,7 @@ const userSchema = new Schema<IUser>(
     refreshToken: {
       type: String,
     },
+    roles: [{ type: Schema.Types.ObjectId, ref: "Role" }], // Reference to the "Role" model
   },
   {
     timestamps: true,

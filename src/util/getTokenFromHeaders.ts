@@ -1,6 +1,6 @@
 import { Request } from "express";
 
-export function getTokenFromHeaders(req: Request): string | undefined {
+export function getTokenFromHeaders(req: Request): string {
   const authHeader =
     req.headers["x-authorization"] || req.headers["authorization"] || "";
   const token = (authHeader as string)?.split(" ")[

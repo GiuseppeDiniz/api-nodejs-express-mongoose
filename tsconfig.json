@@ -21,7 +21,11 @@
         "allowSyntheticDefaultImports": true,
         "baseUrl": ".",
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "typeRoots": [
+          "./src/@types",
+          "node_modules/@types"
+        ] /* List of folders to include type definitions from. */,
     },
     "include": [
         "./src/**/*.ts",

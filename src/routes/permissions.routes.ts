@@ -1,4 +1,4 @@
-import { ensureAuthenticated } from "../middleware/ensureAuthenticated";
+import { ensuredAuthenticated } from "../middleware/ensuredAuthenticated";
 import express, { type Router } from "express";
 import PermissionController from "../controllers/permission.controller";
 
@@ -7,12 +7,12 @@ const permissionRoutes: Router = express.Router();
 permissionRoutes
   .post(
     "/permissions",
-    ensureAuthenticated,
+    ensuredAuthenticated,
     PermissionController.createPermission
   )
   .get(
     "/permissions",
-    ensureAuthenticated,
+    ensuredAuthenticated,
     PermissionController.readPermissions
   );
 

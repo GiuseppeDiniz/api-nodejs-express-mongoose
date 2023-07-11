@@ -1,4 +1,5 @@
 import express, { type Express } from "express";
+import cors from "cors";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import db from "./config/dbConnect";
@@ -18,6 +19,7 @@ db.once("open", () => {
   ## Middlewares
 */
 app.use(express.json());
+app.use(cors());
 const swaggerOptions = {
   swaggerDefinition: {
     info: {

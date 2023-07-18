@@ -26,6 +26,7 @@ class SessionController {
           email: user.email,
         },
         id: decodedToken.sub,
+        roles: user.roles,
       };
 
       return res.json({ data: responseData });
